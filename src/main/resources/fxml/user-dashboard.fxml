@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:id="mainBorderPane" prefHeight="800.0" prefWidth="1200.0" stylesheets="/css/user-dashboard.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mindjavafx.controller.UserDashboardController">
+    
+    <!-- Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" styleClass="dashboard-header">
+            <padding>
+                <Insets left="30.0" right="30.0" />
+            </padding>
+            
+            <!-- Left: Logo & Nav -->
+            <HBox alignment="CENTER_LEFT" spacing="30">
+                <HBox alignment="CENTER" spacing="10">
+                    <Label styleClass="logo-icon" text="🧠" />
+                    <Label styleClass="logo-text" text="MindAudit" />
+                </HBox>
+                
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="entrepriseButtonTop" text="🏢 Entreprise" onAction="#showEntrepriseManagement" styleClass="nav-link" />
+                    <Button fx:id="rapportManagementButtonTop" text="📄 Rapports" onAction="#showRapportManagement" styleClass="nav-link" />
+                    <Button fx:id="auditManagementButtonTop" text="📋 Audit" onAction="#showAuditManagement" styleClass="nav-link" />
+                    <Button fx:id="reclamationButtonTop" text="📬 Réclamations" onAction="#showReclamations" styleClass="nav-link" />
+                    <Button fx:id="fullChatbotButton" text="🤖 Chatbot AI" onAction="#showReclamationChatbot" styleClass="nav-link" />
+                </HBox>
+            </HBox>
+            
+            <Region HBox.hgrow="ALWAYS" />
+            
+            <!-- Right: User Info & Actions -->
+            <HBox alignment="CENTER" spacing="15">
+                <Button onAction="#toggleDarkMode" styleClass="mode-toggle-btn" text="🌙" />
+                <Button onAction="#handleScanDocument" styleClass="qb-btn-primary" text="🔍 Scan" />
+                
+                <Separator orientation="VERTICAL" prefHeight="30" />
+
+                <!-- Notification Bell -->
+                <StackPane>
+                    <Button fx:id="notificationButton" onAction="#showNotificationDropdown" 
+                            style="-fx-background-color: transparent; -fx-text-fill: #0f172a; -fx-font-size: 20px; -fx-cursor: hand;" text="🔔" />
+                    <Label fx:id="notificationBadge" mouseTransparent="true" 
+                           style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-size: 9px; -fx-font-weight: bold; -fx-padding: 2 5; -fx-background-radius: 10;" 
+                           text="3" StackPane.alignment="TOP_RIGHT">
+                        <StackPane.margin>
+                            <Insets right="5" top="5" />
+                        </StackPane.margin>
+                    </Label>
+                </StackPane>
+
+                <HBox alignment="CENTER" spacing="10" styleClass="user-profile-trigger">
+                    <VBox alignment="CENTER_RIGHT">
+                        <Label fx:id="userNameLabel" style="-fx-font-weight: bold; -fx-font-size: 14px;" text="User Name" />
+                        <Label style="-fx-font-size: 11px; -fx-text-fill: #64748b;" text="Premium Plan" />
+                    </VBox>
+                    <Circle fx:id="profileImage" fill="#3b82f6" radius="20.0" stroke="WHITE" strokeWidth="2.0" />
+                </HBox>
+                
+                <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-btn" text="🚪" />
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Main Content Area -->
+    <center>
+        <StackPane>
+            <StackPane fx:id="contentArea" style="-fx-background-color: #f8fafc;" />
+            
+            <!-- Dark Mode Overlay -->
+            <Pane fx:id="moonlightOverlay" mouseTransparent="true" opacity="0.0" style="-fx-background-color: #0f172a;" visible="false" />
+            <Circle fx:id="moonlightCircle" fill="#1e293b" mouseTransparent="true" radius="0.0" visible="false" />
+        </StackPane>
+    </center>
+
+</BorderPane>

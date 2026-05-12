@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.gestionaudit.controllers.ChatbotController"
+      spacing="30" alignment="TOP_CENTER" style="-fx-background-color: #f8fafc; -fx-padding: 40 40;" stylesheets="/styles/modern.css">
+    
+    <!-- BIG TITLE (FROM DASHBOARD) -->
+    <VBox alignment="CENTER" spacing="10" maxWidth="800" fx:id="welcomeHeader">
+        <Region prefHeight="40"/>
+        <Label text="Comment puis-je vous aider ?" 
+               style="-fx-font-size: 42; -fx-font-weight: 800; -fx-text-fill: #2c3e50; -fx-letter-spacing: -1px;"/>
+        <Label text="Votre assistant intelligent pour l'audit et la conformité." 
+               style="-fx-font-size: 16px; -fx-text-fill: #64748b;"/>
+        <Region prefHeight="20"/>
+    </VBox>
+
+    <!-- CHAT HISTORY (HIDDEN BY DEFAULT OR SCALED) -->
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" VBox.vgrow="ALWAYS" maxWidth="900"
+                style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: #e2e8f0; -fx-border-radius: 20px; -fx-background-radius: 20px;"
+                visible="false" managed="false">
+        <padding>
+            <Insets top="30" right="30" bottom="30" left="30"/>
+        </padding>
+        <VBox fx:id="chatHistory" spacing="20" style="-fx-background-color: white; -fx-background-radius: 20px; -fx-padding: 20px;"/>
+    </ScrollPane>
+
+    <!-- SEARCH BAR (FROM DASHBOARD) -->
+    <VBox spacing="15" maxWidth="800" alignment="CENTER">
+        <HBox alignment="CENTER" maxWidth="750" spacing="15"
+              style="-fx-background-color: white; -fx-background-radius: 40; -fx-padding: 10 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 20, 0, 0, 10); -fx-border-color: #e2e8f0; -fx-border-width: 1; -fx-border-radius: 40;">
+            
+            <TextField fx:id="messageField" HBox.hgrow="ALWAYS" promptText="Comment puis-je vous aider aujourd'hui ?" 
+                       style="-fx-background-color: transparent; -fx-font-size: 16; -fx-padding: 10;" onAction="#handleSend"/>
+            
+            <Button fx:id="btnMic" text="🎤" onAction="#toggleRecording" 
+                    style="-fx-background-color: transparent; -fx-text-fill: #0ea5e9; -fx-font-size: 20; -fx-cursor: hand;"/>
+            
+            <Button text="➤" onAction="#handleSend" 
+                    style="-fx-background-color: #0ea5e9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 45; -fx-min-height: 45; -fx-cursor: hand;"/>
+        </HBox>
+        <Label text="L'IA peut faire des erreurs. Vérifiez les informations importantes." style="-fx-font-size: 11px; -fx-text-fill: #94a3b8;"/>
+    </VBox>
+
+</VBox>

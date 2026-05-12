@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindAudit AI | Deep Space Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --bg-glass: rgba(255, 255, 255, 0.7);
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #4f46e5;
+            --accent-glow: rgba(79, 70, 229, 0.2);
+            --border: rgba(226, 232, 240, 0.8);
+            --star-color: transparent;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #020617;
+            --bg-glass: rgba(15, 23, 42, 0.6);
+            --bg-card: rgba(30, 41, 59, 0.5);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --border: rgba(51, 65, 85, 0.5);
+            --star-color: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Animated Stars --- */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        [data-theme="dark"] #stars-container {
+            opacity: 0.5;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-glass);
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--accent);
+        }
+
+        .theme-switch {
+            width: 64px;
+            height: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .switch-knob {
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: white;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        [data-theme="dark"] .switch-knob {
+            transform: translateX(32px);
+            background: #0ea5e9;
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.6);
+        }
+
+        /* --- Content --- */
+        main {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .welcome-section {
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .welcome-section h1 {
+            font-size: 4rem;
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-section p {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 0 20px var(--accent-glow);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, var(--accent-glow));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-main);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .glass-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--accent-glow);
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Footer Status --- */
+        .status-bar {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 3rem;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+    </style>
+</head>
+<body data-theme="light">
+
+    <div id="stars-container"></div>
+
+    <header>
+        <div class="logo">
+            <span>✧</span>
+            <span>MindAudit AI</span>
+        </div>
+        <div class="theme-switch" id="theme-toggle">
+            <div class="switch-knob" id="theme-knob">☀️</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="welcome-section">
+            <div class="badge">Innovation 2026</div>
+            <h1 id="welcomeTitle">Bienvenue sur MindAudit</h1>
+            <p>Intelligence Artificielle & Audit de Conformité</p>
+        </div>
+
+        <div class="grid">
+            <div class="glass-card">
+                <div class="card-icon">📁</div>
+                <h3>Rapports</h3>
+                <p id="stat-reports">Chargement des données...</p>
+            </div>
+            <div class="glass-card">
+                <div class="card-icon">⚡</div>
+                <h3>Scan IA</h3>
+                <p>Analyse de documents en temps réel avec Llama 3.</p>
+            </div>
+            <div class="glass-card">
+                <div class="card-icon">👤</div>
+                <h3>Utilisateurs</h3>
+                <p id="stat-users">Synchronisation API...</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="status-bar">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Système Opérationnel</span>
+    </div>
+
+    <script>
+        // --- Create Stars ---
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            const size = Math.random() * 2 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+            starsContainer.appendChild(star);
+        }
+
+        // --- Theme Management ---
+        const toggle = document.getElementById('theme-toggle');
+        const knob = document.getElementById('theme-knob');
+        const body = document.body;
+
+        setTheme(savedTheme);
+
+        toggle.addEventListener('click', () => {
+            toggleTheme();
+        });
+
+        function toggleTheme() {
+            console.log("Toggle theme called!");
+            const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+            return newTheme;
+        }
+
+        function setTheme(theme) {
+            body.setAttribute('data-theme', theme);
+            knob.textContent = theme === 'light' ? '☀️' : '🌙';
+            localStorage.setItem('deep-theme', theme);
+        }
+
+        // --- API Sync ---
+        const API_URL = 'http://localhost:9000';
+        async function updateStats() {
+            try {
+                const res = await fetch(`${API_URL}/api/stats/all`);
+                const data = await res.json();
+                if(data.success) {
+                    document.getElementById('stat-reports').innerText = `${data.data.total} rapports archivés`;
+                    document.getElementById('stat-users').innerText = `${data.data.active} membres actifs`;
+                    document.getElementById('statusDot').style.background = '#10b981';
+                    document.getElementById('statusText').innerText = 'Connecté à MindAudit API';
+                }
+            } catch(e) {
+                document.getElementById('stat-reports').innerText = 'API déconnectée';
+                document.getElementById('stat-users').innerText = 'Mode hors-ligne';
+                document.getElementById('statusDot').style.background = '#ef4444';
+                document.getElementById('statusText').innerText = 'Erreur Serveur API';
+            }
+        }
+        
+        updateStats();
+        setInterval(updateStats, 15000);
+    </script>
+</body>
+</html>
