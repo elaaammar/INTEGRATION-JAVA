@@ -73,4 +73,13 @@ module com.example.mindjavafx {
     exports com.gestionaudit.models;
     exports com.gestionaudit.services;
     exports com.gestionaudit.utils;
+
+    // ══════════════════════════════════════════════════════════════
+    //  Intégration JavaFX ↔ Symfony (PIDEV 3A)
+    // ══════════════════════════════════════════════════════════════
+    opens com.example.mindjavafx.integration.dto to com.google.gson;
+    exports com.example.mindjavafx.integration;
+    exports com.example.mindjavafx.integration.client;
+    exports com.example.mindjavafx.integration.dto;
+    exports com.example.mindjavafx.integration.service;
 }

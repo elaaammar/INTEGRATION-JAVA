@@ -166,6 +166,15 @@ public class LoginController {
                 System.out.println("[INFO] Données supprimées des préférences");
             }
             
+            // ── Synchronisation Symfony (PIDEV 3A Integration) ──────
+            // Authentifier également côté Symfony en arrière-plan
+            final String loginEmail = emailOrPhone;
+            final String loginPass = password;
+            new Thread(() -> {
+                com.example.mindjavafx.integration.IntegrationManager.login(loginEmail, loginPass);
+            }).start();
+            // ────────────────────────────────────────────────────────
+            
             triggerLoginNotifications(authService.getCurrentUser());
             loadDashboard();
         } else {

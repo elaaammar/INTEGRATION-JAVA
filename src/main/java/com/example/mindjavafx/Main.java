@@ -15,10 +15,12 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         com.gestionaudit.MainFx.setPrimaryStage(stage);
-        // Démarrer le serveur API REST dans un thread séparé
+        // Démarrer le serveur API REST et l'intégration Symfony dans un thread séparé
         new Thread(() -> {
             try {
                 RestApiServer.start();
+                // Initialiser l'intégration JavaFX ↔ Symfony (PIDEV 3A)
+                com.example.mindjavafx.integration.IntegrationManager.initialize();
             } catch (Exception e) {
                 System.err.println("⚠️ Erreur lors du démarrage de l'API: " + e.getMessage());
                 e.printStackTrace();
